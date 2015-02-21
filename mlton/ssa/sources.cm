@@ -73,6 +73,8 @@ constant-propagation.fun
 contify.fun
 deep-flatten.fun
 flatten.fun
+identity-ssa-transform.fun
+identity-ssa2-transform.fun
 inline.sig
 inline.fun
 introduce-loops.fun

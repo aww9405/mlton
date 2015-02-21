@@ -19,6 +19,7 @@ structure CombineConversions = CombineConversions (S)
 structure ConstantPropagation = ConstantPropagation (S)
 structure Contify = Contify (S)
 structure Flatten = Flatten (S)
+structure IdentitySSATransform = IdentitySSATransform (S)
 structure Inline = Inline (S)
 structure IntroduceLoops = IntroduceLoops (S)
 structure KnownCase = KnownCase (S)
@@ -38,6 +39,7 @@ type pass = {name: string,
              doit: Program.t -> Program.t}
 
 val ssaPassesDefault =
+   {name = "identity", doit = IdentitySSATransform.transform} ::
    {name = "removeUnused1", doit = RemoveUnused.transform} ::
    {name = "introduceLoops1", doit = IntroduceLoops.transform} ::
    {name = "loopInvariant1", doit = LoopInvariant.transform} ::
@@ -184,7 +186,8 @@ local
 
    val passGens = 
       inlinePassGen ::
-      (List.map([("addProfile", Profile.addProfile),
+      (List.map([("identity", IdentitySSATransform.transform),
+		 ("addProfile", Profile.addProfile),
                  ("combineConversions",  CombineConversions.transform),
                  ("commonArg", CommonArg.transform),
                  ("commonBlock", CommonBlock.transform),
