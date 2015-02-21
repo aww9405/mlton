@@ -1,0 +1,57 @@
+Master's Project
+Notes for Milestone 1
+Andrew Weller
+
+
+GENERAL
+
+The modification efforts center on the SSA "package", which provides
+   (1) interface to and implementation of SSA trees;
+   (2) transforms on SSA-tree programs, the latter of which are effectively functions on SSA-tree programs, and as which optimizations on SSA trees are implemented;
+   (3) simplification of SSA-tree programs, which are also effectively functions on SSA-tree programs, and perform multiple passes, only some of which are optimizations, on an SSA-tree program.  Different sequences of passes are allowed.  Another module/functor named Control seems to provide information about how many passes to perform and which are optional.
+
+Two SSA tree sets of interfaces and implementations, called SSA and SSA2.  There are parallel implementations of the optimization superstructure, so to speak, for each version.  However, each individual optimization seems to be implemented for only one or the other of the two versions, so, as one might expect, the intent seems to be that SSA2 is newer and that the optimizations are to be migrated from SSA to SSA2 implementations.
+
+The program "trees" are actually complex objects whose structure is mostly exposed: the SSA aspect is really implemented in Block.t's within Function.t's.
+
+
+SPECIFIC
+
+The optimization stubs implement identity transforms.  They print messages indicating they have been executed when the compiler is run on source file(s).  I ran the compiler on the included file "hello-world.sml" to see whether or not the stubs executed.
+
+One for each SSA implementation.  IdentitySSATransform, and IdentitySSA2Transform.  Implementation is more convoluted than necessary (destructuring of argument, the unnecessary let) because I otherwise could not get past syntax errors.
+
+
+All within mlton/ssa directory:
+Files introduced:
+	identity-ssa-transform.fun
+	identity-ssa2-transform.fun
+Files modified:
+	simplify2.fun
+	sources.cm
+	sources.mlb
+
+Simplify2.fun modified in three places:
+After line 20 (declaration of structures at beginning): added
+   structure IdentitySSA2Transform = IdentitySSA2Transform (S)
+After line 40 (declaration of ssa2PassesDefault): added
+   {name = "identity2", doit = IdentitySSA2Transform.transform2} ::
+At line 66 (declaration of passGens within ssa2PassesSetCustom): added
+   ("identity2", IdentitySSA2Transform.transform2),
+after "List.Map([".
+
+Simplify.fun modified similarly.
+
+
+Sources.cm modified in one place:
+After line 75: added (to list of source code files in "package")
+   identity-ssa-transform.fun
+   identity-ssa2-transform.fun
+
+Sources.mlb modified in one place:
+After line 62: added (to list of source code files in "package")
+   identity-ssa-transform.fun
+   identity-ssa2-transform.fun
+
+
+
