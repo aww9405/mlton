@@ -19,7 +19,6 @@ open S
 structure DeepFlatten = DeepFlatten (S)
 (* structure Flatten = Flatten (S) *)
 (* structure Inline = Inline (S) *)
-structure IdentitySSA2Transform = IdentitySSA2Transform (S)
 (* structure IntroduceLoops = IntroduceLoops (S) *)
 (* structure KnownCase = KnownCase (S) *)
 (* structure LocalFlatten = LocalFlatten (S) *)
@@ -39,7 +38,6 @@ type pass = {name: string,
              doit: Program.t -> Program.t}
 
 val ssa2PassesDefault = 
-   {name = "identity2", doit = IdentitySSA2Transform.transform2} ::
    {name = "deepFlatten", doit = DeepFlatten.transform2} ::
    {name = "refFlatten", doit = RefFlatten.transform2} ::
    {name = "removeUnused5", doit = RemoveUnused2.transform2} ::
@@ -65,8 +63,7 @@ local
 
 
    val passGens = 
-      List.map([("identity2", IdentitySSA2Transform.transform2),
-		("addProfile", Profile2.addProfile),
+      List.map([("addProfile", Profile2.addProfile),
                 ("deepFlatten", DeepFlatten.transform2),
                 ("dropProfile", Profile2.dropProfile),
                 ("refFlatten", RefFlatten.transform2),

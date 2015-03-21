@@ -73,8 +73,11 @@ constant-propagation.fun
 contify.fun
 deep-flatten.fun
 flatten.fun
-identity-ssa-transform.fun
-identity-ssa2-transform.fun
+gvnpre-maps.sig
+gvnpre-maps.sml
+gvnpre-values.sig
+gvnpre-values.sml
+gvnpre.fun
 inline.sig
 inline.fun
 introduce-loops.fun
