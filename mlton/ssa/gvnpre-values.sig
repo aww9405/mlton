@@ -37,5 +37,19 @@ signature VALUE_SET = sig
     val get: t * Value.t -> Expr.t option
     val val_insert: t * Expr.t -> Value.t option
     val val_replace: t * Expr.t -> Value.t option
+    val foreach: t * (Expr.t -> unit) -> unit
+end
+
+
+(*
+* WORKLISTS
+* Queue of expressions
+*)
+
+signature WORKLIST = sig
+    val makelist: ValueSet.t -> t
+    val remove: t -> Expr.t
+    val foreach: t * (Expr.t -> unit) -> unit
+    val fold: t * 'a * (Expr.t * 'a -> 'a) -> 'a
 end
 
